@@ -454,6 +454,67 @@ details p {
   grid-template-columns: 1fr .75fr;
 }
 
+.contacts-page {
+  width: min(1180px, calc(100% - 36px));
+  margin-inline: auto;
+  padding: clamp(58px, 8vw, 96px) 0 72px;
+}
+
+.contacts-page h1 {
+  max-width: 860px;
+  margin-bottom: 28px;
+  font-size: clamp(48px, 7.4vw, 88px);
+}
+
+.contacts-lead {
+  max-width: 720px;
+  margin-bottom: 38px;
+  color: var(--muted);
+  font-size: clamp(18px, 2vw, 22px);
+}
+
+.contacts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  max-width: 980px;
+}
+
+.contact-card {
+  min-height: 142px;
+  padding: 24px 26px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 250, 247, .72);
+  transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+a.contact-card:hover {
+  border-color: rgba(110, 38, 54, .42);
+  box-shadow: 0 14px 34px rgba(39, 33, 31, .08);
+  transform: translateY(-2px);
+}
+
+.contact-card span {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--wine);
+  font-weight: 800;
+}
+
+.contact-card strong {
+  display: block;
+  color: var(--muted);
+  font-size: 21px;
+  font-weight: 500;
+}
+
+.contact-card p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 21px;
+}
+
 .booking-form {
   display: grid;
   gap: 16px;
@@ -571,6 +632,7 @@ input, select, textarea {
   .header-cta { display: none; }
   .pain-list, .fit-grid, .brand-list, .blog-grid, .product-grid.large { grid-template-columns: repeat(2, 1fr); }
   .split, .page-hero, .intro-grid, .trust-band, .booking-section, .faq, .article-layout, .contact-hero, .size-calculator { grid-template-columns: 1fr; }
+  .contacts-grid { grid-template-columns: 1fr; }
   .booking-note { position: static; }
   .site-footer { grid-template-columns: 1fr; }
 }
