@@ -51,20 +51,30 @@ a { color: inherit; text-decoration: none; }
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 720;
+  flex-direction: column;
+  gap: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: .95;
   letter-spacing: 0;
 }
 
 .brand-mark {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  color: #fff;
-  background: var(--wine);
-  font-family: Georgia, serif;
+  display: none;
+}
+
+.brand span:not(.brand-mark)::after {
+  content: "lingerie fitting";
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .main-nav {
@@ -222,7 +232,7 @@ h3 { margin-bottom: 10px; font-size: 20px; line-height: 1.2; }
 
 .section { padding: 84px 0; }
 
-.intro-grid, .trust-band, .booking-section {
+.intro-grid, .trust-band, .booking-section, .self-check {
   display: grid;
   grid-template-columns: minmax(260px, .85fr) minmax(320px, 1.15fr);
   gap: clamp(28px, 6vw, 86px);
@@ -232,6 +242,16 @@ h3 { margin-bottom: 10px; font-size: 20px; line-height: 1.2; }
 .intro-grid p:last-child, .trust-band p:last-child {
   color: var(--muted);
   font-size: 19px;
+}
+
+.self-check {
+  padding: clamp(62px, 8vw, 100px) clamp(18px, 5vw, 72px);
+  border-block: 1px solid var(--line);
+  background: linear-gradient(135deg, #fffaf7, #f2e4da);
+}
+
+.self-check .button {
+  margin-top: 24px;
 }
 
 .pain-list, .fit-grid, .brand-list, .blog-grid {
@@ -445,6 +465,42 @@ details p {
   padding-left: 20px;
 }
 
+.check-list.compact {
+  margin: 0;
+  color: var(--muted);
+  font-size: 19px;
+}
+
+.fit-process {
+  padding-top: 38px;
+}
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.process-grid article {
+  min-height: 220px;
+  padding: 26px;
+  border-top: 1px solid var(--wine);
+  background: rgba(255, 250, 247, .58);
+}
+
+.process-grid span {
+  display: block;
+  margin-bottom: 28px;
+  color: var(--gold);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.process-grid p {
+  color: var(--muted);
+}
+
 .booking-note {
   position: sticky;
   top: 104px;
@@ -611,12 +667,33 @@ input, select, textarea {
 
 .site-footer .brand { color: #fff; }
 
+.site-footer .brand span:not(.brand-mark)::after {
+  color: rgba(255, 255, 255, .52);
+}
+
 .site-footer nav {
   display: grid;
   gap: 8px;
 }
 
 .footer-note { margin: 0; }
+
+.sticky-whatsapp {
+  position: fixed;
+  left: 18px;
+  right: 18px;
+  bottom: 16px;
+  z-index: 40;
+  display: none;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: #fff;
+  background: var(--wine);
+  box-shadow: 0 16px 38px rgba(39, 33, 31, .24);
+  font-weight: 800;
+}
 
 @media (max-width: 980px) {
   .site-header { grid-template-columns: auto auto; }
@@ -631,8 +708,9 @@ input, select, textarea {
   .main-nav.open { display: flex; }
   .header-cta { display: none; }
   .pain-list, .fit-grid, .brand-list, .blog-grid, .product-grid.large { grid-template-columns: repeat(2, 1fr); }
-  .split, .page-hero, .intro-grid, .trust-band, .booking-section, .faq, .article-layout, .contact-hero, .size-calculator { grid-template-columns: 1fr; }
+  .split, .page-hero, .intro-grid, .trust-band, .booking-section, .self-check, .faq, .article-layout, .contact-hero, .size-calculator { grid-template-columns: 1fr; }
   .contacts-grid { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: repeat(2, 1fr); }
   .booking-note { position: static; }
   .site-footer { grid-template-columns: 1fr; }
 }
@@ -642,8 +720,11 @@ input, select, textarea {
   .hero-media::after { background: linear-gradient(0deg, rgba(28, 23, 21, .9), rgba(28, 23, 21, .38)); }
   .hero-content { align-self: end; margin-inline: 18px; padding-bottom: 54px; }
   .hero-stats, .product-grid, .review-grid, .pain-list, .fit-grid, .brand-list, .blog-grid, .product-grid.large { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: 1fr; }
   .section { padding: 58px 0; }
   .section-heading { align-items: start; flex-direction: column; }
   .split-media, .page-hero img { min-height: 360px; }
   .final-cta { margin-bottom: 58px; }
+  .sticky-whatsapp { display: flex; }
+  body { padding-bottom: 76px; }
 }

@@ -1,5 +1,6 @@
 const toggle = document.querySelector(".nav-toggle");
 const nav = document.querySelector(".main-nav");
+const whatsappUrl = "https://api.whatsapp.com/send/?phone=996550333087&text&type=phone_number&app_absent=0";
 
 if (toggle && nav) {
   toggle.addEventListener("click", () => {
@@ -7,6 +8,17 @@ if (toggle && nav) {
     toggle.setAttribute("aria-expanded", String(isOpen));
   });
 }
+
+document.querySelectorAll(".header-cta").forEach((link) => {
+  link.href = whatsappUrl;
+  link.textContent = "WhatsApp";
+});
+
+const stickyWhatsapp = document.createElement("a");
+stickyWhatsapp.className = "sticky-whatsapp";
+stickyWhatsapp.href = whatsappUrl;
+stickyWhatsapp.textContent = "Записаться в WhatsApp";
+document.body.appendChild(stickyWhatsapp);
 
 const form = document.querySelector(".booking-form");
 
@@ -19,7 +31,7 @@ if (form) {
     const request = data.get("request") || "подбор белья";
     const message = data.get("message") || "без комментария";
     const text = `Здравствуйте! Меня зовут ${name}. Хочу записаться на подбор в Aquamuse.%0AТелефон: ${phone}%0AЗапрос: ${request}%0AКомментарий: ${message}`;
-    window.location.href = `https://wa.me/?text=${text}`;
+    window.location.href = `https://api.whatsapp.com/send/?phone=996550333087&text=${text}&type=phone_number&app_absent=0`;
   });
 }
 
