@@ -41,51 +41,28 @@ function calculateBraSize(bandCm, bustCm) {
     return { error: "Обхват по груди должен быть больше обхвата под грудью." };
   }
 
-  let band = Math.round(inputBand);
-  let bust = Math.round(inputBust);
+  const band = Math.round(inputBand / 5) * 5 - 5;
+  const difference = Math.round(inputBust - band);
 
-  if (inputBand >= 65 && inputBand <= 67) band = 68;
-
-  band = Math.round(band * 0.39);
-  bust = Math.round(bust * 0.39);
-
-  if (Number.isNaN(band) || band > 65 || band < 20 || Number.isNaN(bust) || bust > 70 || bust < 23 || bust < band) {
+  if (Number.isNaN(band) || band < 60 || band > 120 || difference < 8 || difference > 36) {
     return { error: "Проверьте измерения: похоже, одно из значений введено некорректно." };
   }
 
-  const cups = ["AA", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S"];
-  const resultBandInches = band % 2 === 1 ? band + 1 : band;
-  const cupIndex = band % 2 === 0 ? bust - resultBandInches : bust - band;
-  const bandMap = {
-    28: "60",
-    30: "65",
-    32: "70",
-    34: "75",
-    36: "80",
-    38: "85",
-    40: "90",
-    42: "95",
-    44: "100",
-    46: "105",
-    48: "110",
-    50: "115",
-    52: "120",
-    54: "125",
-    56: "130",
-    58: "135",
-    60: "140",
-    62: "145"
-  };
+  const cups = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"];
+  const cupIndex = Math.round((difference - 10) / 2);
 
   if (cupIndex < 0 || cupIndex >= cups.length) {
     return { error: "Размер получился вне стандартной сетки. Лучше прийти на очный подбор." };
   }
 
-  const euBand = bandMap[resultBandInches] || String(resultBandInches);
+  const mainSize = `${band}${cups[cupIndex]}`;
+  const sisterSize = cupIndex > 0 && band > 60 ? `${band - 5}${cups[cupIndex - 1]}` : "";
 
   return {
-    size: `${euBand}${cups[cupIndex]}`,
-    note: "Это ориентир для старта. У разных брендов посадка может отличаться, поэтому финальный размер лучше подтвердить на примерке."
+    size: mainSize,
+    note: sisterSize
+      ? `По этой таблице основной ориентир - ${mainSize}. Также можно примерить соседний размер ${sisterSize}. Финальную посадку лучше подтвердить на примерке.`
+      : `По этой таблице основной ориентир - ${mainSize}. Финальную посадку лучше подтвердить на примерке.`
   };
 }
 
