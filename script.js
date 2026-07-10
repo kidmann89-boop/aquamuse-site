@@ -1,6 +1,7 @@
 const toggle = document.querySelector(".nav-toggle");
 const nav = document.querySelector(".main-nav");
 const whatsappUrl = "https://api.whatsapp.com/send/?phone=996550333087&text&type=phone_number&app_absent=0";
+const instagramUrl = "https://www.instagram.com/aquamuse.kg?igsh=Z3l3c3MxdXA5Ynk5";
 
 if (toggle && nav) {
   toggle.addEventListener("click", () => {
@@ -12,6 +13,23 @@ if (toggle && nav) {
 document.querySelectorAll(".header-cta").forEach((link) => {
   link.href = whatsappUrl;
   link.textContent = "WhatsApp";
+
+  if (!link.nextElementSibling?.classList.contains("header-social")) {
+    const instagram = document.createElement("a");
+    instagram.className = "header-social";
+    instagram.href = instagramUrl;
+    instagram.target = "_blank";
+    instagram.rel = "noopener";
+    instagram.setAttribute("aria-label", "Instagram Aquamuse");
+    instagram.innerHTML = `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+        <circle cx="12" cy="12" r="4"></circle>
+        <circle cx="17.5" cy="6.5" r="1.2"></circle>
+      </svg>
+    `;
+    link.insertAdjacentElement("afterend", instagram);
+  }
 });
 
 const stickyWhatsapp = document.createElement("a");
