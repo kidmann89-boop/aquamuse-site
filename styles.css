@@ -599,8 +599,13 @@ details p {
 
 .fit-check-visual img {
   width: min(100%, 430px);
-  height: auto;
-  object-fit: contain;
+  height: min(68vh, 650px);
+  min-height: 560px;
+  border: 1px solid rgba(232, 217, 208, .82);
+  border-radius: 8px;
+  box-shadow: 0 24px 70px rgba(39, 33, 31, .13);
+  object-fit: cover;
+  object-position: center top;
 }
 
 .fit-troubles {
@@ -907,7 +912,7 @@ input, select, textarea {
   .fit-check-layout { grid-template-columns: 1fr; gap: 18px; padding-top: 22px; }
   .fit-check-list article { grid-template-columns: 48px 1fr; }
   .fit-check-visual { order: -1; position: static; min-height: auto; padding: 12px 0 20px; border-bottom: 1px solid rgba(232, 217, 208, .82); }
-  .fit-check-visual img { width: min(100%, 330px); }
+  .fit-check-visual img { width: min(100%, 330px); height: 470px; min-height: 0; }
   .split, .page-hero, .fit-guide-hero, .intro-grid, .trust-band, .booking-section, .self-check, .fit-troubles, .faq, .article-layout, .contact-hero, .size-calculator { grid-template-columns: 1fr; }
   .contacts-grid { grid-template-columns: 1fr; }
   .process-grid { grid-template-columns: repeat(2, 1fr); }
