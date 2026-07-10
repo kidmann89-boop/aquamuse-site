@@ -38,7 +38,7 @@ a { color: inherit; text-decoration: none; }
   top: 0;
   z-index: 20;
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto auto;
   align-items: center;
   gap: 12px;
   min-height: 76px;
@@ -536,135 +536,71 @@ details p {
   margin-inline: auto;
 }
 
+.fit-check-layout {
+  display: grid;
+  grid-template-columns: minmax(320px, .95fr) minmax(360px, .78fr);
+  gap: clamp(28px, 7vw, 96px);
+  align-items: start;
+  padding: clamp(34px, 5vw, 62px) 0 0;
+  border-top: 1px solid rgba(232, 217, 208, .82);
+}
+
 .fit-check-list {
   display: grid;
-  gap: 0;
+  border-bottom: 1px solid rgba(232, 217, 208, .82);
 }
 
 .fit-check-list article {
   display: grid;
-  grid-template-columns: minmax(320px, .86fr) minmax(360px, .9fr);
-  gap: clamp(28px, 7vw, 96px);
-  align-items: center;
-  min-height: 520px;
-  padding: clamp(42px, 7vw, 82px) 0;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 18px;
+  padding: 22px 0;
   border-top: 1px solid rgba(232, 217, 208, .82);
 }
 
-.fit-check-list article:last-child {
-  border-bottom: 1px solid rgba(232, 217, 208, .82);
+.fit-check-list article:first-child {
+  border-top: 0;
 }
 
-.fit-check-copy {
-  max-width: 610px;
-}
-
-.fit-check-copy span {
-  display: block;
-  margin-bottom: 18px;
+.fit-check-list span {
   color: var(--gold);
   font-weight: 800;
   letter-spacing: .08em;
-  text-transform: uppercase;
 }
 
-.fit-check-copy h3 {
-  margin-bottom: 18px;
+.fit-check-list h3 {
+  margin-bottom: 8px;
+  color: var(--wine);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(34px, 4vw, 56px);
-  font-style: italic;
+  font-size: clamp(24px, 2.6vw, 34px);
   font-weight: 500;
-  line-height: 1.05;
+  line-height: 1.08;
 }
 
-.fit-check-copy p {
+.fit-check-list p {
+  margin: 0;
   color: var(--muted);
-  font-size: clamp(17px, 1.4vw, 20px);
+  font-size: 17px;
 }
 
-.fit-illustration {
+.fit-check-button {
+  justify-self: start;
+  margin: 26px 0 34px 72px;
+}
+
+.fit-check-visual {
+  position: sticky;
+  top: 104px;
   display: grid;
   place-items: center;
-  min-height: 380px;
+  min-height: 620px;
+  border-bottom: 1px solid rgba(232, 217, 208, .82);
 }
 
-.fit-illustration svg {
-  width: min(100%, 520px);
+.fit-check-visual img {
+  width: min(100%, 430px);
   height: auto;
-}
-
-.fit-diagram {
-  overflow: visible;
-}
-
-.diagram-bg {
-  fill: #fff;
-  stroke: var(--line);
-}
-
-.diagram-line,
-.diagram-cup,
-.diagram-highlight,
-.diagram-check {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.diagram-line {
-  stroke: rgba(39, 33, 31, .42);
-  stroke-width: 4;
-}
-
-.diagram-line.soft-line {
-  stroke: rgba(39, 33, 31, .22);
-  stroke-width: 3;
-}
-
-.diagram-cup {
-  fill: rgba(246, 238, 232, .72);
-  stroke: rgba(39, 33, 31, .62);
-  stroke-width: 4;
-}
-
-.diagram-fill {
-  fill: rgba(110, 38, 54, .16);
-  stroke: none;
-}
-
-.diagram-cup.highlight-outline {
-  fill: none;
-  stroke: var(--wine);
-  stroke-width: 5;
-}
-
-.diagram-highlight {
-  stroke: var(--wine);
-  stroke-width: 8;
-}
-
-.diagram-highlight.soft {
-  stroke-width: 4;
-  opacity: .45;
-}
-
-.diagram-dot {
-  fill: var(--wine);
-}
-
-.diagram-check {
-  stroke: var(--wine);
-  stroke-width: 6;
-}
-
-.diagram-label {
-  fill: var(--wine);
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: .06em;
-  text-anchor: middle;
-  text-transform: uppercase;
+  object-fit: contain;
 }
 
 .fit-troubles {
@@ -968,8 +904,10 @@ input, select, textarea {
   .main-nav.open { display: flex; }
   .header-cta, .header-social { display: none; }
   .pain-list, .fit-grid, .brand-list, .blog-grid, .product-grid.large, .measure-grid { grid-template-columns: repeat(2, 1fr); }
-  .fit-check-list article { grid-template-columns: 1fr; min-height: auto; }
-  .fit-illustration { min-height: 300px; }
+  .fit-check-layout { grid-template-columns: 1fr; gap: 18px; padding-top: 22px; }
+  .fit-check-list article { grid-template-columns: 48px 1fr; }
+  .fit-check-visual { order: -1; position: static; min-height: auto; padding: 12px 0 20px; border-bottom: 1px solid rgba(232, 217, 208, .82); }
+  .fit-check-visual img { width: min(100%, 330px); }
   .split, .page-hero, .fit-guide-hero, .intro-grid, .trust-band, .booking-section, .self-check, .fit-troubles, .faq, .article-layout, .contact-hero, .size-calculator { grid-template-columns: 1fr; }
   .contacts-grid { grid-template-columns: 1fr; }
   .process-grid { grid-template-columns: repeat(2, 1fr); }
@@ -981,11 +919,16 @@ input, select, textarea {
   .hero { min-height: 720px; }
   .hero-media::after { background: linear-gradient(0deg, rgba(28, 23, 21, .9), rgba(28, 23, 21, .38)); }
   .hero-content { align-self: end; margin-inline: 18px; padding-bottom: 54px; }
+  .section, .page-title, .page-hero, .fit-guide-hero {
+    width: 100%;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
   .hero-stats, .product-grid, .review-grid, .pain-list, .fit-grid, .brand-list, .blog-grid, .product-grid.large, .measure-grid, .trouble-list article { grid-template-columns: 1fr; }
-  .fit-check-list article { padding: 42px 0; }
-  .fit-illustration { min-height: 240px; }
+  .fit-check-list article { grid-template-columns: 1fr; gap: 8px; padding: 20px 0; }
+  .fit-check-button { margin-left: 0; }
   .process-grid { grid-template-columns: 1fr; }
-  .section { padding: 58px 0; }
+  .section { padding-top: 58px; padding-bottom: 58px; }
   .section-heading { align-items: start; flex-direction: column; }
   .split-media, .page-hero img { min-height: 360px; }
   .final-cta { margin-bottom: 58px; }

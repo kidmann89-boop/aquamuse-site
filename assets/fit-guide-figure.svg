@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 820" role="img" aria-labelledby="fitFigureTitle">
+  <title id="fitFigureTitle">Line art illustration of bra fit</title>
+  <defs>
+    <style>
+      .soft{fill:none;stroke:#cfc9c4;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+      .body{fill:none;stroke:#8c8783;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+      .line{fill:none;stroke:#24201f;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+      .fine{fill:none;stroke:#24201f;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;opacity:.7}
+      .bra{fill:#f7f2ee;stroke:#24201f;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+      .lace{fill:none;stroke:#24201f;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;opacity:.55}
+      .wine{fill:none;stroke:#6e2636;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+
+  <path class="soft" d="M76 200 C124 120 180 66 258 38"/>
+  <path class="soft" d="M564 200 C516 120 460 66 382 38"/>
+  <path class="soft" d="M142 250 C168 184 208 130 266 85"/>
+  <path class="soft" d="M498 250 C472 184 432 130 374 85"/>
+  <path class="soft" d="M48 306 C77 248 107 204 142 167"/>
+  <path class="soft" d="M592 306 C563 248 533 204 498 167"/>
+  <path class="body" d="M142 250 C112 305 99 365 107 429 C116 504 142 573 162 633"/>
+  <path class="body" d="M498 250 C528 305 541 365 533 429 C524 504 498 573 478 633"/>
+
+  <path class="line" d="M266 107 C229 131 210 171 213 215 C215 247 232 276 260 292"/>
+  <path class="line" d="M374 107 C411 131 430 171 427 215 C425 247 408 276 380 292"/>
+  <path class="fine" d="M272 111 C291 78 340 74 366 106"/>
+  <path class="fine" d="M264 155 C251 178 252 220 271 248"/>
+  <path class="fine" d="M376 155 C389 178 388 220 369 248"/>
+  <path class="fine" d="M258 295 C276 314 300 323 320 323 C340 323 364 314 382 295"/>
+  <path class="fine" d="M255 118 C238 150 235 206 251 253"/>
+  <path class="fine" d="M385 118 C402 150 405 206 389 253"/>
+  <path class="soft" d="M246 138 C228 176 229 225 246 273"/>
+  <path class="soft" d="M394 138 C412 176 411 225 394 273"/>
+
+  <path class="body" d="M233 292 C206 326 191 373 190 424"/>
+  <path class="body" d="M407 292 C434 326 449 373 450 424"/>
+  <path class="body" d="M190 424 C170 492 164 571 174 675"/>
+  <path class="body" d="M450 424 C470 492 476 571 466 675"/>
+
+  <path class="line" d="M220 313 L194 438"/>
+  <path class="line" d="M420 313 L446 438"/>
+  <circle cx="200" cy="414" r="7" fill="#f7f2ee" stroke="#24201f" stroke-width="2"/>
+  <circle cx="440" cy="414" r="7" fill="#f7f2ee" stroke="#24201f" stroke-width="2"/>
+
+  <path class="bra" d="M150 490 C170 386 247 357 320 464 C286 548 200 570 150 490Z"/>
+  <path class="bra" d="M490 490 C470 386 393 357 320 464 C354 548 440 570 490 490Z"/>
+  <path class="line" d="M150 490 C191 562 278 563 320 464 C362 563 449 562 490 490"/>
+  <path class="line" d="M130 535 C219 570 421 570 510 535"/>
+  <path class="line" d="M142 515 C230 545 410 545 498 515"/>
+  <path class="line" d="M320 464 L320 535"/>
+
+  <path class="lace" d="M166 456 C183 438 205 430 227 433 C249 436 271 454 290 482"/>
+  <path class="lace" d="M474 456 C457 438 435 430 413 433 C391 436 369 454 350 482"/>
+  <path class="lace" d="M173 482 C203 459 251 462 286 503"/>
+  <path class="lace" d="M467 482 C437 459 389 462 354 503"/>
+  <path class="lace" d="M184 524 C207 497 249 496 285 532"/>
+  <path class="lace" d="M456 524 C433 497 391 496 355 532"/>
+  <path class="lace" d="M174 438 C184 447 194 447 204 438 C214 447 224 447 234 438 C244 447 254 447 264 438"/>
+  <path class="lace" d="M376 438 C386 447 396 447 406 438 C416 447 426 447 436 438 C446 447 456 447 466 438"/>
+
+  <path class="soft" d="M174 675 C188 707 208 733 231 754"/>
+  <path class="soft" d="M466 675 C452 707 432 733 409 754"/>
+  <path class="wine" d="M271 742 L306 777 L376 690"/>
+</svg>
