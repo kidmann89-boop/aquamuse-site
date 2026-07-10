@@ -593,42 +593,78 @@ details p {
   height: auto;
 }
 
-.body-line,
-.bra-line,
-.accent-line {
+.fit-diagram {
+  overflow: visible;
+}
+
+.diagram-bg {
+  fill: #fff;
+  stroke: var(--line);
+}
+
+.diagram-line,
+.diagram-cup,
+.diagram-highlight,
+.diagram-check {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-.body-line {
-  stroke: rgba(39, 33, 31, .28);
-  stroke-width: 2;
-}
-
-.bra-line {
-  stroke: rgba(39, 33, 31, .66);
-  stroke-width: 2.6;
-}
-
-.bra-line.strong {
-  stroke: var(--ink);
+.diagram-line {
+  stroke: rgba(39, 33, 31, .42);
   stroke-width: 4;
 }
 
-.accent-line {
-  stroke: var(--wine);
-  stroke-width: 2;
-  stroke-dasharray: 7 9;
-  opacity: .7;
+.diagram-line.soft-line {
+  stroke: rgba(39, 33, 31, .22);
+  stroke-width: 3;
 }
 
-.tick {
+.diagram-cup {
+  fill: rgba(246, 238, 232, .72);
+  stroke: rgba(39, 33, 31, .62);
+  stroke-width: 4;
+}
+
+.diagram-fill {
+  fill: rgba(110, 38, 54, .16);
+  stroke: none;
+}
+
+.diagram-cup.highlight-outline {
   fill: none;
-  stroke: var(--ink);
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke: var(--wine);
+  stroke-width: 5;
+}
+
+.diagram-highlight {
+  stroke: var(--wine);
   stroke-width: 8;
+}
+
+.diagram-highlight.soft {
+  stroke-width: 4;
+  opacity: .45;
+}
+
+.diagram-dot {
+  fill: var(--wine);
+}
+
+.diagram-check {
+  stroke: var(--wine);
+  stroke-width: 6;
+}
+
+.diagram-label {
+  fill: var(--wine);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-anchor: middle;
+  text-transform: uppercase;
 }
 
 .fit-troubles {
