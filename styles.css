@@ -445,6 +445,128 @@ details p {
   font-size: 19px;
 }
 
+.fit-guide-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, .55fr);
+  gap: clamp(28px, 6vw, 84px);
+  align-items: end;
+  width: min(1180px, calc(100% - 36px));
+  margin-inline: auto;
+  padding: clamp(72px, 10vw, 126px) 0 54px;
+}
+
+.fit-guide-hero p {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: clamp(18px, 2vw, 22px);
+}
+
+.fit-guide-card {
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+}
+
+.fit-guide-card span {
+  display: block;
+  margin-bottom: 28px;
+  color: var(--gold);
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.fit-guide-card strong {
+  display: block;
+  margin-bottom: 12px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3vw, 42px);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.measure-steps {
+  padding-top: 42px;
+}
+
+.measure-grid, .fit-check-grid {
+  display: grid;
+  gap: 18px;
+}
+
+.measure-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.measure-grid article, .fit-check-grid article {
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+}
+
+.measure-grid span {
+  display: block;
+  margin-bottom: 24px;
+  color: var(--wine);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 36px;
+  line-height: 1;
+}
+
+.measure-grid p, .fit-check-grid p {
+  color: var(--muted);
+}
+
+.fit-guide-calculator {
+  padding: clamp(42px, 6vw, 72px) clamp(18px, 5vw, 62px);
+  border-block: 1px solid var(--line);
+  background: linear-gradient(135deg, #fffaf7, #f3e6dd);
+}
+
+.fit-check-grid {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.fit-check-grid article {
+  min-height: 230px;
+}
+
+.fit-check-grid h3 {
+  color: var(--wine);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.fit-troubles {
+  display: grid;
+  grid-template-columns: minmax(260px, .8fr) minmax(320px, 1.2fr);
+  gap: clamp(28px, 6vw, 72px);
+}
+
+.trouble-list {
+  display: grid;
+  border-top: 1px solid var(--line);
+}
+
+.trouble-list article {
+  display: grid;
+  grid-template-columns: minmax(180px, .55fr) 1fr;
+  gap: 22px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.trouble-list strong {
+  color: var(--ink);
+}
+
+.trouble-list span {
+  color: var(--muted);
+}
+
 .page-hero {
   padding: 72px 0;
 }
@@ -718,8 +840,9 @@ input, select, textarea {
   }
   .main-nav.open { display: flex; }
   .header-cta, .header-social { display: none; }
-  .pain-list, .fit-grid, .brand-list, .blog-grid, .product-grid.large { grid-template-columns: repeat(2, 1fr); }
-  .split, .page-hero, .intro-grid, .trust-band, .booking-section, .self-check, .faq, .article-layout, .contact-hero, .size-calculator { grid-template-columns: 1fr; }
+  .pain-list, .fit-grid, .brand-list, .blog-grid, .product-grid.large, .measure-grid { grid-template-columns: repeat(2, 1fr); }
+  .fit-check-grid { grid-template-columns: repeat(2, 1fr); }
+  .split, .page-hero, .fit-guide-hero, .intro-grid, .trust-band, .booking-section, .self-check, .fit-troubles, .faq, .article-layout, .contact-hero, .size-calculator { grid-template-columns: 1fr; }
   .contacts-grid { grid-template-columns: 1fr; }
   .process-grid { grid-template-columns: repeat(2, 1fr); }
   .booking-note { position: static; }
@@ -730,7 +853,7 @@ input, select, textarea {
   .hero { min-height: 720px; }
   .hero-media::after { background: linear-gradient(0deg, rgba(28, 23, 21, .9), rgba(28, 23, 21, .38)); }
   .hero-content { align-self: end; margin-inline: 18px; padding-bottom: 54px; }
-  .hero-stats, .product-grid, .review-grid, .pain-list, .fit-grid, .brand-list, .blog-grid, .product-grid.large { grid-template-columns: 1fr; }
+  .hero-stats, .product-grid, .review-grid, .pain-list, .fit-grid, .brand-list, .blog-grid, .product-grid.large, .measure-grid, .fit-check-grid, .trouble-list article { grid-template-columns: 1fr; }
   .process-grid { grid-template-columns: 1fr; }
   .section { padding: 58px 0; }
   .section-heading { align-items: start; flex-direction: column; }
