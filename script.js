@@ -1,6 +1,7 @@
 const toggle = document.querySelector(".nav-toggle");
 const nav = document.querySelector(".main-nav");
-const whatsappUrl = "https://api.whatsapp.com/send/?phone=996550333087&text&type=phone_number&app_absent=0";
+const whatsappMessage = "Здравствуйте! Хочу записаться на подбор белья в Aquamuse.";
+const whatsappUrl = `https://wa.me/996550333087?text=${encodeURIComponent(whatsappMessage)}`;
 const instagramUrl = "https://www.instagram.com/aquamuse.kg?igsh=Z3l3c3MxdXA5Ynk5";
 
 if (toggle && nav) {
@@ -48,8 +49,8 @@ if (form) {
     const phone = data.get("phone") || "не указано";
     const request = data.get("request") || "подбор белья";
     const message = data.get("message") || "без комментария";
-    const text = `Здравствуйте! Меня зовут ${name}. Хочу записаться на подбор в Aquamuse.%0AТелефон: ${phone}%0AЗапрос: ${request}%0AКомментарий: ${message}`;
-    window.location.href = `https://api.whatsapp.com/send/?phone=996550333087&text=${text}&type=phone_number&app_absent=0`;
+    const text = `Здравствуйте! Меня зовут ${name}. Хочу записаться на подбор в Aquamuse.\nТелефон: ${phone}\nЗапрос: ${request}\nКомментарий: ${message}`;
+    window.location.href = `https://wa.me/996550333087?text=${encodeURIComponent(text)}`;
   });
 }
 
@@ -71,28 +72,30 @@ function calculateBraSize(bandCm, bustCm) {
     return { error: "Обхват по груди должен быть больше обхвата под грудью." };
   }
 
-  const band = Math.round(inputBand / 5) * 5 - 5;
-  const difference = Math.round(inputBust - band);
+  const band = Math.round(inputBand / 5) * 5;
+  const difference = Math.round(inputBust - inputBand);
 
-  if (Number.isNaN(band) || band < 60 || band > 120 || difference < 8 || difference > 36) {
+  if (Number.isNaN(band) || band < 65 || band > 120 || difference < 10 || difference > 36) {
     return { error: "Проверьте измерения: похоже, одно из значений введено некорректно." };
   }
 
   const cups = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"];
-  const cupIndex = Math.round((difference - 10) / 2);
+  const cupIndex = Math.max(0, Math.round((difference - 12) / 2));
 
   if (cupIndex < 0 || cupIndex >= cups.length) {
     return { error: "Размер получился вне стандартной сетки. Лучше прийти на очный подбор." };
   }
 
   const mainSize = `${band}${cups[cupIndex]}`;
-  const sisterSize = cupIndex > 0 && band > 60 ? `${band - 5}${cups[cupIndex - 1]}` : "";
+  const sisterDown = cupIndex + 1 < cups.length && band > 65 ? `${band - 5}${cups[cupIndex + 1]}` : "";
+  const sisterUp = cupIndex > 0 && band < 120 ? `${band + 5}${cups[cupIndex - 1]}` : "";
+  const sisterText = [sisterDown, sisterUp].filter(Boolean).join(" или ");
 
   return {
     size: mainSize,
-    note: sisterSize
-      ? `По этой таблице основной ориентир - ${mainSize}. Также можно примерить соседний размер ${sisterSize}. Финальную посадку лучше подтвердить на примерке.`
-      : `По этой таблице основной ориентир - ${mainSize}. Финальную посадку лучше подтвердить на примерке.`
+    note: sisterText
+      ? `Стартовая точка для примерки - ${mainSize}. Также можно проверить соседний размер ${sisterText}. Финальную посадку лучше подтвердить на примерке.`
+      : `Стартовая точка для примерки - ${mainSize}. Финальную посадку лучше подтвердить на примерке.`
   };
 }
 
