@@ -22,6 +22,7 @@ body {
   background: var(--paper);
   font-family: Inter, "Segoe UI", Arial, sans-serif;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 img {
@@ -243,6 +244,92 @@ h3 { margin-bottom: 10px; font-size: 20px; line-height: 1.2; }
 .hero-stats dd {
   margin: 0;
   color: rgba(255, 255, 255, .78);
+}
+
+.page-cover {
+  position: relative;
+  display: grid;
+  min-height: calc(100vh - 76px);
+  overflow: hidden;
+  background: #1c1715;
+}
+
+.page-cover-media {
+  position: absolute;
+  inset: 0;
+  opacity: .76;
+}
+
+.page-cover-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.page-cover-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(28, 23, 21, .86), rgba(28, 23, 21, .52), rgba(28, 23, 21, .18));
+}
+
+.page-cover-content {
+  position: relative;
+  align-self: center;
+  width: min(900px, calc(100% - 36px));
+  margin-left: clamp(18px, 7vw, 96px);
+  padding: 56px 0;
+  color: #fff;
+}
+
+.page-cover h1 {
+  max-width: 900px;
+  font-size: clamp(40px, 5.6vw, 76px);
+}
+
+.page-cover-copy {
+  max-width: 650px;
+  color: rgba(255, 255, 255, .9);
+  font-size: clamp(18px, 2vw, 22px);
+}
+
+.page-cover-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 30px;
+}
+
+.page-cover .button.secondary {
+  background: rgba(255, 250, 247, .86);
+}
+
+.page-cover .hero-stats {
+  margin-top: 36px;
+}
+
+.page-cover .hero-stats dt {
+  font-size: 24px;
+}
+
+.page-cover-catalog .page-cover-media img {
+  object-position: center center;
+}
+
+.page-cover-podbor .page-cover-media img {
+  object-position: center center;
+}
+
+.page-cover-razmery .page-cover-media img {
+  object-position: center center;
+  transform: translateX(5%) scale(1.14);
+}
+
+.page-cover-razmery .page-cover-content,
+.page-cover-razmery h1 {
+  max-width: 780px;
 }
 
 .section, .page-title, .page-hero {
@@ -1048,8 +1135,16 @@ input, select, textarea {
 
 @media (max-width: 720px) {
   .hero { min-height: 720px; }
+  .page-cover { min-height: 720px; }
   .hero-media::after { background: linear-gradient(0deg, rgba(28, 23, 21, .9), rgba(28, 23, 21, .38)); }
+  .page-cover-media::after { background: linear-gradient(0deg, rgba(28, 23, 21, .9), rgba(28, 23, 21, .38)); }
   .hero-content { align-self: end; margin-inline: 18px; padding-bottom: 54px; }
+  .page-cover-content { align-self: end; width: min(320px, calc(100vw - 36px)); max-width: calc(100vw - 36px); margin-inline: 18px; padding-bottom: 108px; }
+  .page-cover h1 { max-width: 100%; font-size: clamp(32px, 9.2vw, 38px); }
+  .page-cover-copy { max-width: 100%; font-size: 17px; line-height: 1.55; }
+  .page-cover-actions { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; }
+  .page-cover-actions .button { width: 100%; }
+  .page-cover .hero-stats { display: none; }
   .section, .page-title, .page-hero, .fit-guide-hero {
     width: 100%;
     padding-left: 18px;
