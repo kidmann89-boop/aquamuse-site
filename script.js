@@ -118,7 +118,7 @@ function calculateBraSize(bandCm, bustCm) {
 
   return {
     size: `EU ${euSize} / UK ${ukSize}`,
-    note: `Пояс: ${inputBand} - ${adjustment} = ${adjustedBand.toFixed(1).replace(".0", "")}, округляем вниз до ${band}. Чашка: разница ${difference.toFixed(1).replace(".0", "")} см; EU делим на 2, UK делим на 2,54. Это стартовая точка, финальную посадку лучше подтвердить на примерке.`
+    note: "Это стартовая точка для примерки. Финальную посадку лучше подтвердить на примерке."
   };
 }
 
