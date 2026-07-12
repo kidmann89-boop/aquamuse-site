@@ -56,6 +56,29 @@ if (form) {
 
 const sizeCalculator = document.querySelector("[data-size-calculator]");
 
+function getRecommendedBand(inputBand) {
+  const adjustment = inputBand <= 80 ? 5 : 7;
+  const adjustedBand = inputBand - adjustment;
+
+  return {
+    adjustment,
+    adjustedBand,
+    band: Math.floor(adjustedBand / 5) * 5
+  };
+}
+
+function getUkBand(euBand) {
+  return Math.round(euBand / 2.5 + 4);
+}
+
+function getCupByStep(step, cups) {
+  if (step < 1 || step > cups.length) {
+    return "";
+  }
+
+  return cups[step - 1];
+}
+
 function calculateBraSize(bandCm, bustCm) {
   const inputBand = Number(bandCm);
   const inputBust = Number(bustCm);
@@ -72,30 +95,30 @@ function calculateBraSize(bandCm, bustCm) {
     return { error: "Обхват по груди должен быть больше обхвата под грудью." };
   }
 
-  const band = Math.round(inputBand / 5) * 5;
-  const difference = Math.round(inputBust - inputBand);
+  const { adjustment, adjustedBand, band } = getRecommendedBand(inputBand);
+  const difference = inputBust - inputBand;
 
-  if (Number.isNaN(band) || band < 65 || band > 120 || difference < 10 || difference > 36) {
+  if (Number.isNaN(band) || band < 55 || band > 120 || difference < 2 || difference > 40) {
     return { error: "Проверьте измерения: похоже, одно из значений введено некорректно." };
   }
 
-  const cups = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"];
-  const cupIndex = Math.max(0, Math.round((difference - 12) / 2));
+  const euCups = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U"];
+  const ukCups = ["A", "B", "C", "D", "DD", "E", "F", "FF", "G", "GG", "H", "HH", "J", "JJ", "K", "KK", "L", "LL"];
+  const euCupStep = Math.round(difference / 2);
+  const ukCupStep = Math.round(difference / 2.54);
+  const euCup = getCupByStep(euCupStep, euCups);
+  const ukCup = getCupByStep(ukCupStep, ukCups);
 
-  if (cupIndex < 0 || cupIndex >= cups.length) {
+  if (!euCup || !ukCup) {
     return { error: "Размер получился вне стандартной сетки. Лучше прийти на очный подбор." };
   }
 
-  const mainSize = `${band}${cups[cupIndex]}`;
-  const sisterDown = cupIndex + 1 < cups.length && band > 65 ? `${band - 5}${cups[cupIndex + 1]}` : "";
-  const sisterUp = cupIndex > 0 && band < 120 ? `${band + 5}${cups[cupIndex - 1]}` : "";
-  const sisterText = [sisterDown, sisterUp].filter(Boolean).join(" или ");
+  const euSize = `${band}${euCup}`;
+  const ukSize = `${getUkBand(band)}${ukCup}`;
 
   return {
-    size: mainSize,
-    note: sisterText
-      ? `Стартовая точка для примерки - ${mainSize}. Также можно проверить соседний размер ${sisterText}. Финальную посадку лучше подтвердить на примерке.`
-      : `Стартовая точка для примерки - ${mainSize}. Финальную посадку лучше подтвердить на примерке.`
+    size: `EU ${euSize} / UK ${ukSize}`,
+    note: `Пояс: ${inputBand} - ${adjustment} = ${adjustedBand.toFixed(1).replace(".0", "")}, округляем вниз до ${band}. Чашка: разница ${difference.toFixed(1).replace(".0", "")} см; EU делим на 2, UK делим на 2,54. Это стартовая точка, финальную посадку лучше подтвердить на примерке.`
   };
 }
 

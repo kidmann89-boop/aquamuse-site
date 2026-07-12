@@ -1079,8 +1079,9 @@ input, select, textarea {
 .calculator-result strong {
   color: var(--wine);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 46px;
-  line-height: 1;
+  font-size: clamp(30px, 4vw, 40px);
+  line-height: 1.08;
+  overflow-wrap: anywhere;
 }
 
 .calculator-result p {
