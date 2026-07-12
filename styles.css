@@ -14,6 +14,8 @@
 
 * { box-sizing: border-box; }
 
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -1079,9 +1081,9 @@ input, select, textarea {
 .calculator-result strong {
   color: var(--wine);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(30px, 4vw, 40px);
+  font-size: clamp(24px, 3vw, 32px);
   line-height: 1.08;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
 }
 
 .calculator-result p {
