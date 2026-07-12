@@ -125,6 +125,7 @@ function calculateBraSize(bandCm, bustCm) {
 if (sizeCalculator) {
   const result = sizeCalculator.querySelector("[data-size-result]");
   const note = sizeCalculator.querySelector("[data-size-note]");
+  const catalogLink = sizeCalculator.querySelector("[data-size-catalog-link]");
 
   sizeCalculator.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -134,10 +135,16 @@ if (sizeCalculator) {
     if (calculated.error) {
       result.textContent = "-";
       note.textContent = calculated.error;
+      if (catalogLink) {
+        catalogLink.hidden = true;
+      }
       return;
     }
 
     result.textContent = calculated.size;
     note.textContent = calculated.note;
+    if (catalogLink) {
+      catalogLink.hidden = false;
+    }
   });
 }

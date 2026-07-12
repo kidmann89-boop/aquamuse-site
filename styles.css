@@ -1089,6 +1089,12 @@ input, select, textarea {
   color: var(--muted);
 }
 
+.calculator-result-action {
+  width: 100%;
+  margin-top: 8px;
+  text-align: center;
+}
+
 .site-footer {
   display: grid;
   grid-template-columns: 1fr auto auto;
