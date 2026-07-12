@@ -52,15 +52,18 @@ a { color: inherit; text-decoration: none; }
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  width: clamp(132px, 12vw, 172px);
+  min-width: 132px;
+}
+
+.site-header > .brand {
   position: absolute;
   left: 50%;
   top: 50%;
-  display: inline-flex;
-  align-items: center;
   justify-self: center;
   z-index: 1;
-  width: clamp(132px, 12vw, 172px);
-  min-width: 132px;
   transform: translate(-50%, -50%);
 }
 
@@ -1199,7 +1202,7 @@ input, select, textarea {
 
 @media (max-width: 980px) {
   .site-header { grid-template-columns: auto auto; }
-  .brand {
+  .site-header > .brand {
     position: static;
     grid-column: 1;
     width: 142px;
