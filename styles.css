@@ -1091,6 +1091,11 @@ input, select, textarea {
   color: var(--muted);
 }
 
+.calculator-result .calculator-alternative {
+  color: var(--wine);
+  font-weight: 700;
+}
+
 .calculator-result-action {
   width: 100%;
   margin-top: 8px;

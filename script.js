@@ -115,16 +115,24 @@ function calculateBraSize(bandCm, bustCm) {
 
   const euSize = `${band}${euCup}`;
   const ukSize = `${getUkBand(band)}${ukCup}`;
+  const alternativeBand = band + 5;
+  const alternativeEuCup = getCupByStep(euCupStep - 1, euCups);
+  const alternativeUkCup = getCupByStep(ukCupStep - 1, ukCups);
+  const alternative = alternativeEuCup && alternativeUkCup
+    ? `EU ${alternativeBand}${alternativeEuCup} / UK ${getUkBand(alternativeBand)}${alternativeUkCup}`
+    : "";
 
   return {
     size: `EU ${euSize} / UK ${ukSize}`,
-    note: "Это стартовая точка для примерки. Финальную посадку лучше подтвердить на примерке."
+    note: "Это стартовая точка для примерки. Финальную посадку лучше подтвердить на примерке.",
+    alternative
   };
 }
 
 if (sizeCalculator) {
   const result = sizeCalculator.querySelector("[data-size-result]");
   const note = sizeCalculator.querySelector("[data-size-note]");
+  const alternative = sizeCalculator.querySelector("[data-size-alternative]");
   const catalogLink = sizeCalculator.querySelector("[data-size-catalog-link]");
 
   sizeCalculator.addEventListener("submit", (event) => {
@@ -135,6 +143,10 @@ if (sizeCalculator) {
     if (calculated.error) {
       result.textContent = "-";
       note.textContent = calculated.error;
+      if (alternative) {
+        alternative.textContent = "";
+        alternative.hidden = true;
+      }
       if (catalogLink) {
         catalogLink.hidden = true;
       }
@@ -143,6 +155,12 @@ if (sizeCalculator) {
 
     result.textContent = calculated.size;
     note.textContent = calculated.note;
+    if (alternative) {
+      alternative.textContent = calculated.alternative
+        ? `Альтернативный размер, если хотите немного свободнее: ${calculated.alternative}`
+        : "";
+      alternative.hidden = !calculated.alternative;
+    }
     if (catalogLink) {
       catalogLink.hidden = false;
     }
