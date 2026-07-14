@@ -10,6 +10,7 @@
   --blue: #425a6b;
   --gold: #b9935a;
   --shadow: 0 20px 60px rgba(39, 33, 31, .12);
+  --header-height: 84px;
   --body-font: Inter, "Segoe UI", Arial, sans-serif;
   --display-font: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, "Times New Roman", serif;
 }
@@ -46,8 +47,8 @@ a { color: inherit; text-decoration: none; }
   grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 12px;
-  min-height: 76px;
-  padding: 14px clamp(18px, 4vw, 52px);
+  min-height: var(--header-height);
+  padding: 17px clamp(18px, 4vw, 52px);
   background: rgba(255, 250, 247, .88);
   border-bottom: 1px solid rgba(232, 217, 208, .78);
   backdrop-filter: blur(18px);
@@ -203,7 +204,7 @@ a { color: inherit; text-decoration: none; }
 .hero {
   position: relative;
   display: grid;
-  min-height: calc(100vh - 76px);
+  min-height: calc(100vh - var(--header-height));
   overflow: hidden;
   background: #1c1715;
 }
@@ -311,7 +312,7 @@ h3 { margin-bottom: 10px; font-size: 20px; line-height: 1.2; }
 .page-cover {
   position: relative;
   display: grid;
-  min-height: calc(100vh - 76px);
+  min-height: calc(100vh - var(--header-height));
   overflow: hidden;
   background: #1c1715;
 }
