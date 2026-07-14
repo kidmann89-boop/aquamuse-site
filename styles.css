@@ -384,6 +384,18 @@ h3 { margin-bottom: 10px; font-size: 20px; line-height: 1.2; }
   object-position: center center;
 }
 
+.page-cover-brendy .page-cover-media img {
+  object-position: 62% center;
+}
+
+.page-cover-blog .page-cover-media img {
+  object-position: center center;
+}
+
+.page-cover-kontakty .page-cover-media img {
+  object-position: 58% center;
+}
+
 .page-cover-razmery .page-cover-media img {
   object-position: center center;
   transform: translateX(5%) scale(1.14);
