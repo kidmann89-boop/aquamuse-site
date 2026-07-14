@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220" role="img" aria-labelledby="title desc">
+  <title id="title">Проверьте ощущения</title>
+  <desc id="desc">Большой вопросительный и восклицательный знак.</desc>
+  <rect width="360" height="220" fill="#fffaf7"/>
+  <circle cx="132" cy="110" r="74" fill="#f6eee8" stroke="#e8d9d0" stroke-width="2"/>
+  <circle cx="228" cy="110" r="74" fill="#f2e2d8" stroke="#e8d9d0" stroke-width="2"/>
+  <text x="128" y="146" text-anchor="middle" fill="#6e2636" font-family="Georgia, 'Times New Roman', serif" font-size="132" font-weight="700">?</text>
+  <text x="226" y="146" text-anchor="middle" fill="#b9935a" font-family="Georgia, 'Times New Roman', serif" font-size="132" font-weight="700">!</text>
+  <path d="M73 178c60 22 154 22 214 0" fill="none" stroke="#6e2636" stroke-width="3" stroke-linecap="round" opacity=".18"/>
+</svg>
