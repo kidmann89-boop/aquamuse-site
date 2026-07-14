@@ -95,7 +95,7 @@ function calculateBraSize(bandCm, bustCm) {
     return { error: "Обхват по груди должен быть больше обхвата под грудью." };
   }
 
-  const { adjustment, adjustedBand, band } = getRecommendedBand(inputBand);
+  const { band } = getRecommendedBand(inputBand);
   const difference = inputBust - inputBand;
 
   if (Number.isNaN(band) || band < 55 || band > 120 || difference < 2 || difference > 40) {
@@ -164,5 +164,62 @@ if (sizeCalculator) {
     if (catalogLink) {
       catalogLink.hidden = false;
     }
+  });
+}
+
+const productModal = document.querySelector("[data-product-modal]");
+
+if (productModal) {
+  const productOpeners = document.querySelectorAll("[data-product-open]");
+  const productClose = productModal.querySelector(".product-modal-close");
+  const productMainImage = productModal.querySelector("[data-product-main-image]");
+  const productThumbs = productModal.querySelectorAll("[data-product-thumb]");
+  let lastFocusedElement = null;
+
+  const closeProductModal = () => {
+    productModal.hidden = true;
+    document.body.classList.remove("modal-open");
+    if (lastFocusedElement) {
+      lastFocusedElement.focus();
+    }
+  };
+
+  const openProductModal = (event) => {
+    lastFocusedElement = event.currentTarget;
+    productModal.hidden = false;
+    document.body.classList.add("modal-open");
+    if (productClose) {
+      productClose.focus();
+    }
+  };
+
+  productOpeners.forEach((opener) => {
+    opener.addEventListener("click", openProductModal);
+  });
+
+  productModal.addEventListener("click", (event) => {
+    if (event.target.closest("[data-product-close]")) {
+      closeProductModal();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !productModal.hidden) {
+      closeProductModal();
+    }
+  });
+
+  productThumbs.forEach((thumb) => {
+    thumb.addEventListener("click", () => {
+      const src = thumb.dataset.src;
+      if (!src || !productMainImage) {
+        return;
+      }
+
+      productMainImage.src = src;
+      productMainImage.alt = thumb.dataset.alt || "";
+      productThumbs.forEach((item) => item.classList.remove("is-active"));
+      thumb.classList.add("is-active");
+    });
   });
 }
