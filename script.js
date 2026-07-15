@@ -170,6 +170,8 @@ if (sizeCalculator) {
 const productModal = document.querySelector("[data-product-modal]");
 
 if (productModal) {
+  const CATALOG_SYNC_URL =
+    "https://docs.google.com/spreadsheets/d/1tk1WPZJyUoIs9BAT9C2L0RVOTQG5qnchltnhEfK1wo8/gviz/tq?tqx=out:json&sheet=%D0%A1%D0%B0%D0%B9%D1%82%20%E2%80%94%20%D0%BA%D0%B0%D1%82%D0%B0%D0%BB%D0%BE%D0%B3";
   const catalogProducts = {
     "ambra-black": {
       title: "Бюстгальтер классический push-up",
@@ -269,23 +271,120 @@ if (productModal) {
     }
   };
 
+  const parseCellValue = (cell) => {
+    if (!cell || cell.v === null || cell.v === undefined) {
+      return "";
+    }
+
+    return String(cell.v).trim();
+  };
+
+  const renderSizeBadges = (container, sizes, fallbackText = "уточнить") => {
+    if (!container) {
+      return;
+    }
+
+    container.textContent = "";
+
+    if (!sizes.length) {
+      const fallback = document.createElement("span");
+      fallback.textContent = fallbackText;
+      container.appendChild(fallback);
+      return;
+    }
+
+    sizes.forEach((size) => {
+      const badge = document.createElement("span");
+      badge.textContent = size;
+      container.appendChild(badge);
+    });
+  };
+
+  const buildProductMessage = (product) => {
+    const sizes = product.sizes.length ? ` Размеры в наличии: ${product.sizes.join(", ")}.` : "";
+    return `Здравствуйте! Хочу уточнить наличие ${product.title}.${sizes}`;
+  };
+
+  const parseCatalogSyncResponse = (text) => {
+    const match = text.match(/setResponse\(([\s\S]+)\);?$/);
+
+    if (!match) {
+      return {};
+    }
+
+    const payload = JSON.parse(match[1]);
+    const rows = payload.table?.rows || [];
+
+    return rows.reduce((result, row) => {
+      const cells = row.c || [];
+      const productCode = parseCellValue(cells[0]).toUpperCase();
+
+      if (!productCode) {
+        return result;
+      }
+
+      const title = parseCellValue(cells[2]);
+      const sizes = parseCellValue(cells[3])
+        .split(",")
+        .map((size) => size.trim())
+        .filter(Boolean);
+      const price = parseCellValue(cells[4]);
+
+      result[productCode] = {
+        title,
+        sizes,
+        price
+      };
+
+      return result;
+    }, {});
+  };
+
+  const applyCatalogSync = (catalogSync) => {
+    productOpeners.forEach((opener, index) => {
+      const productId = opener.dataset.productOpen;
+      const productCode = (opener.dataset.productCode || `AQ${index + 1}`).toUpperCase();
+      const product = catalogProducts[productId];
+      const syncedProduct = catalogSync[productCode];
+
+      if (!product || !syncedProduct) {
+        return;
+      }
+
+      product.productCode = productCode;
+      product.title = syncedProduct.title || product.title;
+      product.price = syncedProduct.price || product.price;
+      product.sizes = syncedProduct.sizes;
+      product.sizeText = product.sizes.length ? "" : "уточнить наличие";
+      product.whatsappText = buildProductMessage(product);
+
+      setText(opener.querySelector(".catalog-product-title"), product.title);
+      setText(opener.querySelector(".catalog-product-price"), product.price);
+      renderSizeBadges(opener.querySelector(".catalog-product-sizes"), product.sizes, product.sizeText);
+    });
+  };
+
+  const loadCatalogSync = async () => {
+    try {
+      const response = await fetch(CATALOG_SYNC_URL, { cache: "no-store" });
+
+      if (!response.ok) {
+        throw new Error(`Catalog sync failed: ${response.status}`);
+      }
+
+      const catalogSync = parseCatalogSyncResponse(await response.text());
+      applyCatalogSync(catalogSync);
+    } catch (error) {
+      console.warn("Catalog sync unavailable", error);
+    }
+  };
+
   const renderProductSizes = (product) => {
     if (!productSizes) {
       return;
     }
 
-    productSizes.textContent = "";
-
-    if (!product.sizes.length) {
-      productSizes.textContent = product.sizeText || "уточнить";
-      return;
-    }
-
-    product.sizes.forEach((size) => {
-      const badge = document.createElement("span");
-      badge.textContent = size;
-      productSizes.appendChild(badge);
-    });
+    renderSizeBadges(productSizes, product.sizes, product.sizeText || "уточнить");
   };
 
   const setActiveThumb = (button) => {
@@ -376,6 +475,8 @@ if (productModal) {
       productClose.focus();
     }
   };
+
+  loadCatalogSync();
 
   productOpeners.forEach((opener) => {
     opener.addEventListener("click", openProductModal);
