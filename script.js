@@ -170,11 +170,153 @@ if (sizeCalculator) {
 const productModal = document.querySelector("[data-product-modal]");
 
 if (productModal) {
+  const catalogProducts = {
+    "ambra-black": {
+      title: "Бюстгальтер классический push-up",
+      sku: "Артикул: 0876 OIL",
+      brand: "AMBRA",
+      line: "NUANCES D'AUTUNNO",
+      price: "12 000 сом",
+      color: "Черный",
+      sizes: ["70/B", "70/C"],
+      fit: "Формованная чашка, аккуратная поддержка, гладкая линия под одеждой.",
+      note: "Точную посадку лучше подтвердить на примерке: у разных брендов один и тот же размер может ощущаться по-разному.",
+      whatsappText: "Здравствуйте! Хочу забронировать примерку модели AMBRA 0876 OIL.",
+      images: [
+        { src: "assets/catalog-ambra-model.jpg", alt: "Черный комплект Ambra на модели" },
+        { src: "assets/catalog-ambra-set.jpg", alt: "Черный комплект Ambra на белом фоне" },
+        { src: "assets/catalog-ambra-close.jpg", alt: "Крупный план черного бюстгальтера Ambra" },
+        { src: "assets/catalog-ambra-back.jpg", alt: "Спинка черного бюстгальтера Ambra" }
+      ]
+    },
+    "ambra-nude": {
+      title: "Бежевый комплект с мягкой чашкой",
+      sku: "Артикул: уточняется",
+      brand: "Aquamuse selection",
+      line: "уточняется",
+      price: "Цена уточняется",
+      color: "Бежевый",
+      sizes: [],
+      sizeText: "размеры уточняются",
+      fit: "Мягкая кружевная чашка без лишнего объема, деликатная линия под одеждой и комфортная посадка на каждый день.",
+      note: "Цена и размерная сетка будут добавлены после сверки наличия. Уже можно написать нам и уточнить примерку.",
+      whatsappText: "Здравствуйте! Хочу уточнить наличие и размеры бежевого комплекта с мягкой чашкой.",
+      images: [
+        { src: "assets/catalog-ambra-nude-model.jpg", alt: "Бежевый комплект с мягкой чашкой на модели" },
+        { src: "assets/catalog-ambra-nude-set.jpg", alt: "Бежевый комплект белья на белом фоне" },
+        { src: "assets/catalog-ambra-nude-close.jpg", alt: "Крупный план бежевого бюстгальтера с мягкой чашкой" },
+        { src: "assets/catalog-ambra-nude-back.jpg", alt: "Спинка бежевого бюстгальтера на модели" }
+      ]
+    }
+  };
   const productOpeners = document.querySelectorAll("[data-product-open]");
   const productClose = productModal.querySelector(".product-modal-close");
   const productMainImage = productModal.querySelector("[data-product-main-image]");
-  const productThumbs = productModal.querySelectorAll("[data-product-thumb]");
+  const productThumbsContainer = productModal.querySelector("[data-product-thumbs]");
+  const productSku = productModal.querySelector("[data-product-sku]");
+  const productTitle = productModal.querySelector("[data-product-title]");
+  const productBrand = productModal.querySelector("[data-product-brand]");
+  const productLine = productModal.querySelector("[data-product-line]");
+  const productPrice = productModal.querySelector("[data-product-price]");
+  const productColor = productModal.querySelector("[data-product-color]");
+  const productSizes = productModal.querySelector("[data-product-sizes]");
+  const productFit = productModal.querySelector("[data-product-fit]");
+  const productWhatsapp = productModal.querySelector("[data-product-whatsapp]");
+  const productNote = productModal.querySelector("[data-product-note]");
   let lastFocusedElement = null;
+
+  const setText = (element, value) => {
+    if (element) {
+      element.textContent = value;
+    }
+  };
+
+  const renderProductSizes = (product) => {
+    if (!productSizes) {
+      return;
+    }
+
+    productSizes.textContent = "";
+
+    if (!product.sizes.length) {
+      productSizes.textContent = product.sizeText || "уточнить";
+      return;
+    }
+
+    product.sizes.forEach((size) => {
+      const badge = document.createElement("span");
+      badge.textContent = size;
+      productSizes.appendChild(badge);
+    });
+  };
+
+  const setActiveThumb = (button) => {
+    if (!productThumbsContainer) {
+      return;
+    }
+
+    productThumbsContainer.querySelectorAll("[data-product-thumb]").forEach((item) => {
+      item.classList.toggle("is-active", item === button);
+    });
+  };
+
+  const renderProductThumbs = (product) => {
+    if (!productThumbsContainer || !productMainImage) {
+      return;
+    }
+
+    productThumbsContainer.textContent = "";
+
+    product.images.forEach((image, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.productThumb = "";
+      button.dataset.src = image.src;
+      button.dataset.alt = image.alt;
+      if (index === 0) {
+        button.classList.add("is-active");
+      }
+
+      const img = document.createElement("img");
+      img.src = image.src;
+      img.alt = "";
+      button.appendChild(img);
+
+      button.addEventListener("click", () => {
+        productMainImage.src = image.src;
+        productMainImage.alt = image.alt;
+        setActiveThumb(button);
+      });
+
+      productThumbsContainer.appendChild(button);
+    });
+  };
+
+  const renderProduct = (product) => {
+    if (!product) {
+      return;
+    }
+
+    if (productMainImage && product.images[0]) {
+      productMainImage.src = product.images[0].src;
+      productMainImage.alt = product.images[0].alt;
+    }
+
+    setText(productSku, product.sku);
+    setText(productTitle, product.title);
+    setText(productBrand, product.brand);
+    setText(productLine, product.line);
+    setText(productPrice, product.price);
+    setText(productColor, product.color);
+    setText(productFit, product.fit);
+    setText(productNote, product.note);
+    renderProductSizes(product);
+    renderProductThumbs(product);
+
+    if (productWhatsapp) {
+      productWhatsapp.href = `https://wa.me/996550333087?text=${encodeURIComponent(product.whatsappText)}`;
+    }
+  };
 
   const closeProductModal = () => {
     productModal.hidden = true;
@@ -185,6 +327,10 @@ if (productModal) {
   };
 
   const openProductModal = (event) => {
+    const productId = event.currentTarget.dataset.productOpen;
+    const product = catalogProducts[productId] || catalogProducts["ambra-black"];
+
+    renderProduct(product);
     lastFocusedElement = event.currentTarget;
     productModal.hidden = false;
     document.body.classList.add("modal-open");
@@ -207,19 +353,5 @@ if (productModal) {
     if (event.key === "Escape" && !productModal.hidden) {
       closeProductModal();
     }
-  });
-
-  productThumbs.forEach((thumb) => {
-    thumb.addEventListener("click", () => {
-      const src = thumb.dataset.src;
-      if (!src || !productMainImage) {
-        return;
-      }
-
-      productMainImage.src = src;
-      productMainImage.alt = thumb.dataset.alt || "";
-      productThumbs.forEach((item) => item.classList.remove("is-active"));
-      thumb.classList.add("is-active");
-    });
   });
 }
