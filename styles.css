@@ -2587,8 +2587,14 @@ input, select, textarea {
   .cart-actions .button,
   .cart-actions button,
   .cart-remove { width: 100%; }
-  .product-modal { padding: 10px; align-items: end; }
-  .product-modal-panel { max-height: calc(100vh - 20px); }
+  .product-modal {
+    align-items: start;
+    padding: calc(58px + env(safe-area-inset-top, 0px)) 10px 10px;
+  }
+  .product-modal-panel {
+    max-height: calc(100vh - 68px - env(safe-area-inset-top, 0px));
+    max-height: calc(100dvh - 68px - env(safe-area-inset-top, 0px));
+  }
   .product-modal-grid { gap: 20px; padding: 14px; }
   .product-gallery-main img { aspect-ratio: 3 / 4.1; max-height: none; }
   .product-details h2 { font-size: 29px; }
