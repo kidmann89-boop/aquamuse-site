@@ -2596,13 +2596,17 @@ if (productModal) {
     }
 
     const selectedPrice = product.sizePrices?.[normalizeSizeKey(size)];
-    renderProductPrice(productPrice, product, selectedPrice || product.price, size);
+    renderProductPrice(productPrice, product, selectedPrice || "Цена уточняется", size);
   };
 
   const getProductOrderPriceText = (product, selectedSize = "") => {
     const selectedPrice = selectedSize && product.sizePrices?.[normalizeSizeKey(selectedSize)]
       ? product.sizePrices[normalizeSizeKey(selectedSize)]
       : "";
+    if (selectedSize && !selectedPrice) {
+      return "";
+    }
+
     const basePrice = selectedPrice || product.price || "";
     const discountedPrice = getDiscountedPriceText(product, basePrice, selectedSize);
     const effectivePriceRange = selectedSize ? "" : getEffectivePriceRangeText(product, basePrice);
