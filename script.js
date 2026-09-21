@@ -2817,6 +2817,9 @@ if (productModal) {
         sizeDiscounts: {},
         newArrivalSizes: {},
         kitProductIds: [],
+        color: "",
+        fit: "",
+        note: "",
         discountPercent: 0,
         isNewArrival: false
       };
@@ -2846,6 +2849,9 @@ if (productModal) {
         newArrivalSizes: nextNewArrivalSizes,
         images: existing.images?.length ? existing.images : images,
         kitProductIds: existing.kitProductIds?.length ? existing.kitProductIds : kitProductIds,
+        color: existing.color || syncedJson.color || syncedJson.cvet || syncedJson["цвет"] || "",
+        fit: existing.fit || syncedJson.fit || syncedJson.fit_description || syncedJson.fitDescription || syncedJson.posadka || syncedJson["посадка"] || "",
+        note: existing.note || syncedJson.note || syncedJson.hint || syncedJson.podskazka || syncedJson["подсказка"] || "",
         discountPercent: Math.max(existing.discountPercent || 0, ...Object.values(nextSizeDiscounts), discountPercent),
         isNewArrival: existing.isNewArrival || isNewArrival || Object.keys(nextNewArrivalSizes).length > 0
       };
@@ -2884,6 +2890,15 @@ if (productModal) {
         ? syncedProduct.brand
         : product.brand;
       product.title = syncedProduct.title || product.title;
+      product.color = Object.prototype.hasOwnProperty.call(syncedProduct, "color")
+        ? syncedProduct.color
+        : product.color;
+      product.fit = Object.prototype.hasOwnProperty.call(syncedProduct, "fit")
+        ? syncedProduct.fit
+        : product.fit;
+      product.note = Object.prototype.hasOwnProperty.call(syncedProduct, "note")
+        ? syncedProduct.note
+        : product.note;
       product.price = syncedProduct.price || product.price;
       product.sizes = syncedProduct.sizes;
       product.sizePrices = syncedProduct.sizePrices || {};
@@ -2922,6 +2937,15 @@ if (productModal) {
         ? syncedProduct.brand
         : product.brand;
       product.title = syncedProduct.title || product.title;
+      product.color = Object.prototype.hasOwnProperty.call(syncedProduct, "color")
+        ? syncedProduct.color
+        : product.color;
+      product.fit = Object.prototype.hasOwnProperty.call(syncedProduct, "fit")
+        ? syncedProduct.fit
+        : product.fit;
+      product.note = Object.prototype.hasOwnProperty.call(syncedProduct, "note")
+        ? syncedProduct.note
+        : product.note;
       product.price = syncedProduct.price || product.price;
       product.sizes = syncedProduct.sizes;
       product.sizePrices = syncedProduct.sizePrices || {};
