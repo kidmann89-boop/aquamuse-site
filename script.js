@@ -1940,6 +1940,7 @@ if (productModal) {
   const catalogFilterButtons = document.querySelectorAll("[data-catalog-filter]");
   const catalogSizeSearch = document.querySelector("[data-catalog-size-search]");
   const catalogSizeInput = document.querySelector("[data-catalog-size-input]");
+  const catalogBrandSelect = document.querySelector("[data-catalog-brand]");
   const productClose = productModal.querySelector(".product-modal-close");
   const productGalleryMain = productModal.querySelector("[data-product-zoom]");
   const productMainImage = productModal.querySelector("[data-product-main-image]");
@@ -1962,6 +1963,13 @@ if (productModal) {
   const catalogQuery = new URLSearchParams(window.location.search);
   const requestedCatalogCategory = catalogQuery.get("category") || "all";
   const requestedCatalogSize = catalogQuery.get("size") || "";
+  const requestedCatalogBrand = catalogQuery.get("brand") || "";
+  const cleanCatalogBrand = (value) => String(value || "").normalize("NFKC").trim().replace(/\s+/g, " ");
+  const normalizeCatalogBrand = (value) => cleanCatalogBrand(value).toLocaleLowerCase("ru");
+  const unbrandedKey = "__unbranded__";
+  const productBrandKey = (product) => normalizeCatalogBrand(product?.brand) || unbrandedKey;
+  let activeCatalogBrand = normalizeCatalogBrand(requestedCatalogBrand);
+  let catalogBrands = new Map();
   const normalizeCatalogSearchSize = (value) => String(value || "")
     .trim()
     .toUpperCase()
@@ -1977,13 +1985,22 @@ if (productModal) {
   const catalogSizeNoticeText = document.createElement("span");
   const catalogSizeReset = document.createElement("button");
   catalogSizeNotice.className = "catalog-size-filter";
-  catalogSizeNotice.hidden = true;
+  catalogSizeNoticeText.setAttribute("role", "status");
+  catalogSizeNoticeText.setAttribute("aria-live", "polite");
+  catalogSizeNoticeText.setAttribute("aria-atomic", "true");
+  catalogSizeNoticeText.textContent = "Загружаем каталог…";
   catalogSizeReset.type = "button";
-  catalogSizeReset.textContent = "Сбросить";
+  catalogSizeReset.textContent = "Сбросить фильтры";
+  catalogSizeReset.hidden = true;
   catalogSizeNotice.append(catalogSizeNoticeText, catalogSizeReset);
+  const catalogEmpty = document.createElement("div");
+  catalogEmpty.className = "catalog-empty";
+  catalogEmpty.hidden = true;
+  catalogEmpty.innerHTML = "<strong>Подходящих товаров пока нет</strong><p>Попробуйте другой бренд, категорию или размер.</p>";
 
   if (catalogGrid) {
     catalogGrid.insertAdjacentElement("beforebegin", catalogSizeNotice);
+    catalogGrid.appendChild(catalogEmpty);
   }
 
   if (catalogSizeInput && activeCatalogSize) {
@@ -1997,6 +2014,43 @@ if (productModal) {
 
     const normalizedSize = normalizeSizeKey(size);
     return product?.sizes?.some((item) => normalizeSizeKey(item) === normalizedSize);
+  };
+
+  const syncCatalogBrandOptions = () => {
+    if (!catalogBrandSelect) return;
+    catalogBrands = new Map();
+    productOpeners.forEach((opener) => {
+      const product = catalogProducts[opener.dataset.productOpen];
+      if (!product) return;
+      const key = productBrandKey(product);
+      if (!catalogBrands.has(key)) catalogBrands.set(key, cleanCatalogBrand(product.brand) || "Без бренда");
+    });
+    catalogBrandSelect.textContent = "";
+    const appendOption = (value, label) => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = label;
+      catalogBrandSelect.appendChild(option);
+    };
+    appendOption("", "Все бренды");
+    [...catalogBrands].sort((left, right) => left[1].localeCompare(right[1], "ru", { sensitivity: "base" }))
+      .forEach(([key, label]) => appendOption(key, label));
+    if (activeCatalogBrand && !catalogBrands.has(activeCatalogBrand)) {
+      appendOption(activeCatalogBrand, `${cleanCatalogBrand(requestedCatalogBrand) || activeCatalogBrand} — нет товаров`);
+    }
+    catalogBrandSelect.value = activeCatalogBrand;
+    catalogBrandSelect.disabled = false;
+  };
+
+  const updateCatalogFilterUrl = () => {
+    const url = new URL(window.location.href);
+    const filters = { category: activeCatalogFilter === "all" ? "" : activeCatalogFilter, brand: activeCatalogBrand, size: activeCatalogSize };
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) url.searchParams.set(key, value);
+      else url.searchParams.delete(key);
+    });
+    url.hash = "catalog-list";
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
   };
 
   const syncCatalogFilterButtons = () => {
@@ -2021,7 +2075,7 @@ if (productModal) {
   };
 
   const inferCatalogCategory = (product) => {
-    const text = `${product?.title || ""} ${product?.brand || ""}`.toLowerCase();
+    const text = String(product?.title || "").toLowerCase();
     return /\u0442\u0440\u0443\u0441|slip|brief|bikini/.test(text) ? "trusy" : "byustgaltery";
   };
 
@@ -2098,7 +2152,8 @@ if (productModal) {
       const matchesNewArrival = activeCatalogFilter !== "new" || Boolean(product?.isNewArrival);
       const matchesCategory = activeCatalogFilter === "all" || activeCatalogFilter === "discounts" || activeCatalogFilter === "new" || category === activeCatalogFilter;
       const matchesSize = productHasCatalogSize(product, activeCatalogSize);
-      const isVisible = Boolean(product) && matchesCategory && matchesSize && matchesDiscount && matchesNewArrival;
+      const matchesBrand = !activeCatalogBrand || productBrandKey(product) === activeCatalogBrand;
+      const isVisible = Boolean(product) && matchesCategory && matchesSize && matchesBrand && matchesDiscount && matchesNewArrival;
       opener.hidden = !isVisible;
 
       if (isVisible) {
@@ -2106,31 +2161,34 @@ if (productModal) {
       }
     });
 
-    catalogSizeNotice.hidden = !activeCatalogSize && activeCatalogFilter !== "discounts" && activeCatalogFilter !== "new";
-    catalogSizeNoticeText.textContent = activeCatalogFilter === "discounts"
-      ? visibleCount
-        ? `Показаны товары со скидкой${activeCatalogSize ? ` и размером ${activeCatalogSize}` : ""}.`
-        : `Сейчас нет товаров со скидкой${activeCatalogSize ? ` и размером ${activeCatalogSize}` : ""}.`
-      : activeCatalogFilter === "new"
-        ? visibleCount
-        ? `Показаны товары из нового поступления${activeCatalogSize ? ` и размером ${activeCatalogSize}` : ""}.`
-        : `Сейчас нет товаров из нового поступления${activeCatalogSize ? ` и размером ${activeCatalogSize}` : ""}.`
-      : activeCatalogSize
-        ? visibleCount
-        ? `Показаны товары с размером ${activeCatalogSize}.`
-        : `Сейчас нет товаров с размером ${activeCatalogSize} в выбранной категории.`
-        : "";
+    const categoryLabel = { byustgaltery: "Бюстгальтеры", trusy: "Трусы", discounts: "Со скидкой", new: "Новое поступление" }[activeCatalogFilter];
+    const brandLabel = activeCatalogBrand ? catalogBrands.get(activeCatalogBrand) || cleanCatalogBrand(requestedCatalogBrand) || activeCatalogBrand : "";
+    const description = [brandLabel, categoryLabel, activeCatalogSize ? `Размер ${activeCatalogSize}` : ""].filter(Boolean);
+    const mod10 = visibleCount % 10;
+    const mod100 = visibleCount % 100;
+    const noun = mod10 === 1 && mod100 !== 11 ? "товар" : mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14) ? "товара" : "товаров";
+    catalogSizeNoticeText.textContent = [`Найдено: ${visibleCount} ${noun}`, ...description].join(" · ");
+    catalogSizeReset.hidden = !activeCatalogBrand && !activeCatalogSize && activeCatalogFilter === "all";
+    catalogEmpty.hidden = visibleCount > 0;
   };
 
   catalogSizeReset.addEventListener("click", () => {
     activeCatalogSize = "";
     activeCatalogFilter = "all";
+    activeCatalogBrand = "";
+    if (catalogBrandSelect) catalogBrandSelect.value = "";
     if (catalogSizeInput) {
       catalogSizeInput.value = "";
     }
     syncCatalogFilterButtons();
     applyCatalogFilter();
-    window.history.replaceState(null, "", `${window.location.pathname}#catalog-list`);
+    updateCatalogFilterUrl();
+  });
+
+  catalogBrandSelect?.addEventListener("change", () => {
+    activeCatalogBrand = catalogBrandSelect.value;
+    applyCatalogFilter();
+    updateCatalogFilterUrl();
   });
 
   if (catalogSizeSearch) {
@@ -2138,17 +2196,9 @@ if (productModal) {
       event.preventDefault();
       const nextSize = normalizeCatalogSearchSize(catalogSizeInput?.value || "");
 
-      if (!nextSize) {
-        return;
-      }
-
       activeCatalogSize = nextSize;
       applyCatalogFilter();
-      window.history.replaceState(
-        null,
-        "",
-        `${window.location.pathname}?category=${encodeURIComponent(activeCatalogFilter)}&size=${encodeURIComponent(activeCatalogSize)}#catalog-list`
-      );
+      updateCatalogFilterUrl();
     });
   }
 
@@ -2157,13 +2207,7 @@ if (productModal) {
       activeCatalogFilter = button.dataset.catalogFilter || "all";
       syncCatalogFilterButtons();
       applyCatalogFilter();
-      window.history.replaceState(
-        null,
-        "",
-        activeCatalogFilter === "all" && !activeCatalogSize
-          ? `${window.location.pathname}#catalog-list`
-          : `${window.location.pathname}?category=${encodeURIComponent(activeCatalogFilter)}${activeCatalogSize ? `&size=${encodeURIComponent(activeCatalogSize)}` : ""}#catalog-list`
-      );
+      updateCatalogFilterUrl();
     });
   });
 
@@ -2963,6 +3007,7 @@ if (productModal) {
 
       setText(opener.querySelector(".catalog-product-title"), product.title);
       setText(opener.querySelector(".catalog-product-brand"), product.brand);
+      opener.dataset.productCategory = inferCatalogCategory(product);
       const productMedia = opener.querySelector(".catalog-product-media");
       const primaryImage = opener.querySelector(".catalog-product-photo-primary");
       const hoverImage = opener.querySelector(".catalog-product-photo-hover");
@@ -3023,6 +3068,7 @@ if (productModal) {
     } catch (error) {
       console.warn("Catalog sync unavailable", error);
     } finally {
+      syncCatalogBrandOptions();
       applyCatalogFilter();
       openRequestedCatalogProduct();
     }
